@@ -1,0 +1,16 @@
+package server;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
+public class Config {
+    private final Properties properties;
+
+    public Config(String configFile) throws IOException {
+        properties = new Properties();
+        try(FileInputStream fis = new FileInputStream(configFile)) {
+            properties.load(fis);
+        }
+    }
+}
