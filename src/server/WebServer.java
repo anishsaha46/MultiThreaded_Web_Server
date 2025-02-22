@@ -11,5 +11,11 @@ import java.util.logging.SimpleFormatter;
 
 
 public class WebServer {
+    private final int port;
+    private final Router router;
+    private volatile boolean running;
+    private final Logger logger;
+    private final Config config;
+    private final ExecutorService thService
     
 }
