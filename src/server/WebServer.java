@@ -16,6 +16,17 @@ public class WebServer {
     private volatile boolean running;
     private final Logger logger;
     private final Config config;
-    private final ExecutorService thService
-    
+    private final ExecutorService threadPool;
+
+    public WebServer(String configFile) throws Exception {
+        this.config = new Config(configFile);
+        this.port = config.getPort();
+        this.router = new Router();
+        this.running = false;
+        this.logger = Logger.getLogger("WebServer");
+        FileHandler fh = new FileHandler(config.getLogFile());
+        fh.setFormatter(new SimpleFormatter());
+        logger.addHandler(fh);
+    }
+
 }
