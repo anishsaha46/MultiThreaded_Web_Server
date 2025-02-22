@@ -17,4 +17,8 @@ public class Config {
     public int getPort() {
         return Integer.parseInt(properties.getProperty("port","8080"));
     }
+
+    public String getStaticDir() {
+        return properties.getProperty("static.dir", "static");
+    }
 }
