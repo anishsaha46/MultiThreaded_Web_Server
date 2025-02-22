@@ -13,4 +13,8 @@ public class Config {
             properties.load(fis);
         }
     }
+
+    public int getPort() {
+        return Integer.parseInt(properties.getProperty("port","8080"));
+    }
 }
