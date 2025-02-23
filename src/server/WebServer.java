@@ -35,4 +35,21 @@ public class WebServer {
         router.get("/", (method, path) -> "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nWelcome!");
     }
 
+    public void start() throws IOException {
+        running = true;
+        logger.info("Starting server on port" + port);
+        try (ServerSocket serverSocket = new ServerSocket(port)){
+            while(running){
+                try{
+                    Socket clienSocket = serverSocket.accept();
+                    logger.info("New Connection from"+clienSocket.getInetAddress())
+                    threadPool.execute(new RequestHandler(clienSocket, router, logger,config));
+                } catch(IOException e){
+                    logger.severe("Error accepting connection"+e.getMessage());
+                }
+            } finally{
+                threadPool.shutdown();
+            }
+        }
+    }
 }
