@@ -54,6 +54,9 @@ public class WebServer {
         public void stop(){
             running = false;
         }
-        
+
+        public Router getRouter(){
+            return router;
+        }
     }
 }
