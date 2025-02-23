@@ -27,6 +27,12 @@ public class WebServer {
         FileHandler fh = new FileHandler(config.getLogFile());
         fh.setFormatter(new SimpleFormatter());
         logger.addHandler(fh);
+
+        int numberofThreads = Runtime.getRuntime().availableProcessors() * 2;
+        this.threadPool = Executors.newFixedThreadPool(numberofThreads);
+
+        // Register default routes
+        router.get("/", (method, path) -> "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nWelcome!");
     }
 
 }
