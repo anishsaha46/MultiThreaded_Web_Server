@@ -78,4 +78,7 @@ public class RequestHandler implements Runnable {
             }
         }
     }
+    private String sanitizePath(String path) {
+        return path.replaceAll("\\.\\./", ""); // Prevent directory traversal
+    }
 }
