@@ -51,5 +51,9 @@ public class WebServer {
                 threadPool.shutdown();
             }
         }
+        public void stop(){
+            running = false;
+        }
+        
     }
 }
