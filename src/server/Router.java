@@ -13,4 +13,8 @@ public class Router {
         this.routes = new HashMap<>();
         this.staticFileHandler = new StaticFileHandler();
     }
+
+    public void get(String path,BiFunction<String,String,String> handler){
+        routes.computeIfAbsent("GET",k -> new HashMap<>()).put(path,handler);
+    }
 }
