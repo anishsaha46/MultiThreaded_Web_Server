@@ -23,4 +23,8 @@ public class StaticFileHandler {
         CONTENT_TYPES.put(".txt", "text/plain");
         CONTENT_TYPES.put(".json", "application/json");
     }
+
+    public StaticFileHandler(String staticDir) {
+        this.staticDir = staticDir;
+    }
 }
