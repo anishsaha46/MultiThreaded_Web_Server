@@ -42,6 +42,12 @@ public class RequestHandler implements Runnable {
                     contentLength = Integer.parseInt(line.split(":")[1].trim());
                 }
             }
+
+            // Security check for requuest size
+            if(requestBuilder.length() > MAX_REQUEST_SIZE || contentLength > MAX_REQUEST_SIZE){
+                sendError(out,413,"Request Too Large");
+                return;
+            }
         } catch (IOException e) {
             logger.severe("Error handling request: " + e.getMessage());
         } finally {
