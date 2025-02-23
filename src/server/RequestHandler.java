@@ -48,6 +48,26 @@ public class RequestHandler implements Runnable {
                 sendError(out,413,"Request Too Large");
                 return;
             }
+
+            String request = requestBuilder.toString();
+            if(!request.isEmpty()){
+                String[] requestLines = request.split("\r\n");
+                String[] requestLine = requestLines[0].split(" ");
+                String method = requestLine[0];
+                String path = requestLine[1];
+
+                logger.info("Request: " + method + " " + path);
+
+                // Basic Security Headers
+                String response = router.handleRequest(method, path);
+                out.print("HTTP/1.1 " + response.split("\r\n")[0] + "\r\n");
+                out.print("X-Content-Type-Options: nosniff\r\n");
+                out.print("X-Frame-Options: DENY\r\n");
+                out.print("X-XSS-Protection: 1; mode=block\r\n");
+                out.print(response.substring(response.indexOf("\r\n\r\n") + 4));
+                out.flush();
+
+            }
         } catch (IOException e) {
             logger.severe("Error handling request: " + e.getMessage());
         } finally {
