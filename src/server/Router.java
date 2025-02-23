@@ -17,4 +17,8 @@ public class Router {
     public void get(String path,BiFunction<String,String,String> handler){
         routes.computeIfAbsent("GET",k -> new HashMap<>()).put(path,handler);
     }
+
+    public void post(String path,BiFunction<String,String,String> handler){
+        routes.computeIfAbsent("POST",k -> new HashMap<>()).put(path,handler);
+    }
 }
