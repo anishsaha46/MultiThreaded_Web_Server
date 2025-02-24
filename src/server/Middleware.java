@@ -13,4 +13,12 @@ public class Middleware {
     public void use(MiddlewareHandler handler) {
         handlers.add(handler);
     }
+
+    public String process(String request){
+        String result = request;
+        for (MiddlewareHandler handler : handlers) {
+            result = handler.handle(result);
+        }
+        return result;
+    }
 }
