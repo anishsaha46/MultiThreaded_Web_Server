@@ -12,6 +12,7 @@ import java.util.logging.SimpleFormatter;
 public class WebServer {
     private final int port;
     private final Router router;
+    private final Middleware middleware; // Middleware instance
     private volatile boolean running;
     private final Logger logger;
     private final Config config;
@@ -21,6 +22,7 @@ public class WebServer {
         this.config = new Config(configFile);
         this.port = config.getPort();
         this.router = new Router();
+        this.middleware = new Middleware(); // Initialize middleware
         this.running = false;
         this.logger = Logger.getLogger("WebServer");
         FileHandler fh = new FileHandler(config.getLogFile());
@@ -33,6 +35,12 @@ public class WebServer {
 
         // Register default routes
         router.get("/", (method, path) -> "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nWelcome!");
+
+        // Register middleware
+        middleware.use((request) -> {
+            logger.info("Middleware: Logging request - " + request);
+            return request; // Pass through the request
+        });
     }
 
     public void start() throws IOException {
@@ -44,7 +52,7 @@ public class WebServer {
                     Socket clientSocket = serverSocket.accept();
                     logger.info("New connection from " + clientSocket.getInetAddress());
                     // Use the thread pool to handle the request
-                    threadPool.execute(new RequestHandler(clientSocket, router, logger, config));
+                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, logger, config));
                 } catch (IOException e) {
                     logger.severe("Error accepting connection: " + e.getMessage());
                 }
@@ -61,6 +69,10 @@ public class WebServer {
 
     public Router getRouter() {
         return router;
+    }
+
+    public Middleware getMiddleware() {
+        return middleware;
     }
 
     public static void main(String[] args) {
