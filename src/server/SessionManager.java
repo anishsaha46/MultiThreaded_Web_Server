@@ -9,5 +9,11 @@ public class SessionManager {
     
     public SessionManager() {
         this.sessions = new HashMap<>();
-    }    
+    }
+    
+    public String createSession() {
+        String sessionId = UUID.randomUUID().toString();
+        sessions.put(sessionId, new HashMap<>());
+        return sessionId;
+    }
 }
