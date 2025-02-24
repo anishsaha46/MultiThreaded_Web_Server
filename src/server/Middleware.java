@@ -9,4 +9,8 @@ public class Middleware {
     public Middleware() {
         this.handlers = new ArrayList<>();
     }
+
+    public void use(MiddlewareHandler handler) {
+        handlers.add(handler);
+    }
 }
