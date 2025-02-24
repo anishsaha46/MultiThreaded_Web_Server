@@ -12,7 +12,8 @@ import java.util.logging.SimpleFormatter;
 public class WebServer {
     private final int port;
     private final Router router;
-    private final Middleware middleware; // Middleware instance
+    private final Middleware middleware;
+    private final SessionManager sessionManager;
     private volatile boolean running;
     private final Logger logger;
     private final Config config;
@@ -22,7 +23,8 @@ public class WebServer {
         this.config = new Config(configFile);
         this.port = config.getPort();
         this.router = new Router();
-        this.middleware = new Middleware(); // Initialize middleware
+        this.middleware = new Middleware();
+        this.sessionManager = new SessionManager();
         this.running = false;
         this.logger = Logger.getLogger("WebServer");
         FileHandler fh = new FileHandler(config.getLogFile());
@@ -52,7 +54,7 @@ public class WebServer {
                     Socket clientSocket = serverSocket.accept();
                     logger.info("New connection from " + clientSocket.getInetAddress());
                     // Use the thread pool to handle the request
-                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, logger, config));
+                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, sessionManager, logger, config));
                 } catch (IOException e) {
                     logger.severe("Error accepting connection: " + e.getMessage());
                 }
@@ -73,6 +75,10 @@ public class WebServer {
 
     public Middleware getMiddleware() {
         return middleware;
+    }
+
+    public SessionManager getSessionManager() {
+        return sessionManager;
     }
 
     public static void main(String[] args) {
