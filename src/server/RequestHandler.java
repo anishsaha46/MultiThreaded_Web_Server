@@ -8,13 +8,15 @@ import java.util.logging.Logger;
 public class RequestHandler implements Runnable {
     private final Socket clientSocket;
     private final Router router;
+    private final Middleware middleware;
     private final Logger logger;
     private final Config config;
     private static final int MAX_REQUEST_SIZE = 8192;
 
-    public RequestHandler(Socket clientSocket, Router router, Logger logger, Config config) {
+    public RequestHandler(Socket clientSocket, Router router,Middleware middleware, Logger logger, Config config) {
         this.clientSocket = clientSocket;
         this.router = router;
+        this.middleware = middleware;
         this.logger = logger;
         this.config = config;
     }
