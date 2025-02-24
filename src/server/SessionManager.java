@@ -20,4 +20,8 @@ public class SessionManager {
     public Map<String, Object> getSession(String sessionId) {
         return sessions.get(sessionId);
     }
+
+    public void destroySession(String sessionId){
+        sessions.remove(sessionId);
+    }
 }
