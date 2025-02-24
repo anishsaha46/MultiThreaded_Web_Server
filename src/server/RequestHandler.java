@@ -9,6 +9,7 @@ public class RequestHandler implements Runnable {
     private final Router router;
     private final Middleware middleware;
     private final Logger logger;
+    @SuppressWarnings("unused")
     private final Config config;
     private static final int MAX_REQUEST_SIZE = 8192;
 
@@ -60,7 +61,13 @@ public class RequestHandler implements Runnable {
                 String processedRequest = middleware.process(request);
                 
                 // Handle the request with the router
-                String response = router.handleRequest(method, path, processedRequest);
+                String response;
+                try {
+                    response = router.handleRequest(method, path, processedRequest);
+                } catch (IOException e) {
+                    response = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\n\r\nInternal Server Error";
+                    logger.severe("Error handling request: " + e.getMessage());
+                }
                 
                 // Send response
                 out.print("HTTP/1.1 " + response.split("\r\n")[0] + "\r\n");
