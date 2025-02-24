@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.UUID;
 
 public class SessionManager {
-    private final Map<String,Map<String , Object>> sessions;
-    
+    private final Map<String, Map<String, Object>> sessions;
+
     public SessionManager() {
         this.sessions = new HashMap<>();
     }
-    
+
     public String createSession() {
         String sessionId = UUID.randomUUID().toString();
         sessions.put(sessionId, new HashMap<>());
@@ -21,11 +21,17 @@ public class SessionManager {
         return sessions.get(sessionId);
     }
 
-    public void destroySession(String sessionId){
+    public void destroySession(String sessionId) {
         sessions.remove(sessionId);
     }
 
     public boolean isValidSession(String sessionId) {
         return sessions.containsKey(sessionId);
+    }
+
+    public void updateSession(String sessionId, String key, Object value) {
+        if (sessions.containsKey(sessionId)) {
+            sessions.get(sessionId).put(key, value);
+        }
     }
 }
