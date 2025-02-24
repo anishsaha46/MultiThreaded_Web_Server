@@ -1,4 +1,3 @@
-// src/server/RequestHandler.java
 package server;
 
 import java.io.*;
@@ -13,7 +12,7 @@ public class RequestHandler implements Runnable {
     private final Config config;
     private static final int MAX_REQUEST_SIZE = 8192;
 
-    public RequestHandler(Socket clientSocket, Router router,Middleware middleware, Logger logger, Config config) {
+    public RequestHandler(Socket clientSocket, Router router, Middleware middleware, Logger logger, Config config) {
         this.clientSocket = clientSocket;
         this.router = router;
         this.middleware = middleware;
@@ -57,8 +56,13 @@ public class RequestHandler implements Runnable {
                 
                 logger.info(method + " " + path);
                 
-                // Basic security headers
-                String response = router.handleRequest(method, path);
+                // Process middleware
+                String processedRequest = middleware.process(request);
+                
+                // Handle the request with the router
+                String response = router.handleRequest(method, path, processedRequest);
+                
+                // Send response
                 out.print("HTTP/1.1 " + response.split("\r\n")[0] + "\r\n");
                 out.print("X-Content-Type-Options: nosniff\r\n");
                 out.print("X-Frame-Options: DENY\r\n");
