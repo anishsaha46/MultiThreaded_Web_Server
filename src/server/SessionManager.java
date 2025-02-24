@@ -24,4 +24,8 @@ public class SessionManager {
     public void destroySession(String sessionId){
         sessions.remove(sessionId);
     }
+
+    public boolean isValidSession(String sessionId) {
+        return sessions.containsKey(sessionId);
+    }
 }
