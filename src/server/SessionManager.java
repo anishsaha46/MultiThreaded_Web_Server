@@ -16,4 +16,8 @@ public class SessionManager {
         sessions.put(sessionId, new HashMap<>());
         return sessionId;
     }
+
+    public Map<String, Object> getSession(String sessionId) {
+        return sessions.get(sessionId);
+    }
 }
