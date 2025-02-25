@@ -40,4 +40,15 @@ public class Database {
         }
         table.put(key,value);
     }
+    
+    public void delete(String tableName, String key){
+        Map<String,Object> table = tables.get(tableName);
+        if(table == null){
+            throw new IllegalArgumentException("Table"+tableName+"Table does not exist");
+        }
+        if(!table.containsKey(key)){
+            throw new IllegalArgumentException("Key "+key+" does not exist in table"+tableName);
+        }
+        table.remove(key);
+    }
 }
