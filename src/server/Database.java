@@ -51,4 +51,8 @@ public class Database {
         }
         table.remove(key);
     }
+
+    public boolean tableExists(String tableName){
+        return tables.containsKey(tableName);
+    }
 }
