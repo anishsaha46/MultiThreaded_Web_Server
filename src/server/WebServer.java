@@ -14,6 +14,7 @@ public class WebServer {
     private final Router router;
     private final Middleware middleware;
     private final SessionManager sessionManager;
+    private final Database database;
     private volatile boolean running;
     private final Logger logger;
     private final Config config;
@@ -25,6 +26,7 @@ public class WebServer {
         this.router = new Router();
         this.middleware = new Middleware();
         this.sessionManager = new SessionManager();
+        this.database = new Database();
         this.running = false;
         this.logger = Logger.getLogger("WebServer");
         FileHandler fh = new FileHandler(config.getLogFile());
@@ -43,6 +45,9 @@ public class WebServer {
             logger.info("Middleware: Logging request - " + request);
             return request; // Pass through the request
         });
+
+        // Initialize database
+        database.createTable("users");
     }
 
     public void start() throws IOException {
@@ -54,7 +59,7 @@ public class WebServer {
                     Socket clientSocket = serverSocket.accept();
                     logger.info("New connection from " + clientSocket.getInetAddress());
                     // Use the thread pool to handle the request
-                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, sessionManager, logger, config));
+                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, sessionManager, database, logger, config));
                 } catch (IOException e) {
                     logger.severe("Error accepting connection: " + e.getMessage());
                 }
@@ -79,6 +84,10 @@ public class WebServer {
 
     public SessionManager getSessionManager() {
         return sessionManager;
+    }
+
+    public Database getDatabase() {
+        return database;
     }
 
     public static void main(String[] args) {
