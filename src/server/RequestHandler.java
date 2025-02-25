@@ -10,16 +10,19 @@ public class RequestHandler implements Runnable {
     private final Middleware middleware;
     @SuppressWarnings("unused")
     private final SessionManager sessionManager;
+    @SuppressWarnings("unused")
+    private final Database database;
     private final Logger logger;
     @SuppressWarnings("unused")
     private final Config config;
     private static final int MAX_REQUEST_SIZE = 8192;
 
-    public RequestHandler(Socket clientSocket, Router router, Middleware middleware, SessionManager sessionManager, Logger logger, Config config) {
+    public RequestHandler(Socket clientSocket, Router router, Middleware middleware, SessionManager sessionManager, Database database, Logger logger, Config config) {
         this.clientSocket = clientSocket;
         this.router = router;
         this.middleware = middleware;
         this.sessionManager = sessionManager;
+        this.database = database;
         this.logger = logger;
         this.config = config;
     }
