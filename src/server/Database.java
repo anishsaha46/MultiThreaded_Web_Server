@@ -9,4 +9,9 @@ public class Database {
     public Database() {
         this.tables = new HashMap<>();
     }
+
+    public void createTable(String tableName){
+        tables.putIfAbsent(tableName,new HashMap<>());
+    }
+    
 }
