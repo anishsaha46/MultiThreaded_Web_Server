@@ -29,4 +29,15 @@ public class Database {
         }
         return table.get(key);
     }
+
+    public void update(String tableName, String key, Object value){
+        Map<String,Object> table = tables.get(tableName);
+        if(table == null){
+            throw new IllegalArgumentException("Table"+tableName+"Table does not exist");
+        }
+        if(!table.containsKey(key)){
+            throw new IllegalArgumentException("Key "+key+" does not exist in table"+tableName);
+        }
+        table.put(key,value);
+    }
 }
