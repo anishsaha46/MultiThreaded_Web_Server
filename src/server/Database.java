@@ -13,5 +13,13 @@ public class Database {
     public void createTable(String tableName){
         tables.putIfAbsent(tableName,new HashMap<>());
     }
-    
+
+    public void insert(String tableName, String key, Object value){
+        Map<String,Object> table = tables.get(tableName);
+        if((table == null){
+            throw new IllegalArgumentException("Table"+tableName+"Table does not exist");
+        }
+        table.put(key,value);
+    }
+
 }
