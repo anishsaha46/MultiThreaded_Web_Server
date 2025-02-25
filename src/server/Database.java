@@ -16,10 +16,17 @@ public class Database {
 
     public void insert(String tableName, String key, Object value){
         Map<String,Object> table = tables.get(tableName);
-        if((table == null){
+        if(table == null){
             throw new IllegalArgumentException("Table"+tableName+"Table does not exist");
         }
         table.put(key,value);
     }
 
+    public Object get(String tableName, String key){
+        Map<String,Object> table = tables.get(tableName);
+        if(table == null){
+            throw new IllegalArgumentException("Table"+tableName+"Table does not exist");
+        }
+        return table.get(key);
+    }
 }
