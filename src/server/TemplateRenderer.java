@@ -11,4 +11,15 @@ public class TemplateRenderer {
     public TemplateRenderer(String templatesDir){
         this.templatesDir = templatesDir;
     }
+
+    public String render(String templateName,Map<String,Object> data){
+        String template = loadTemplate(templateName);
+        if(template == null) return "Template not found";
+        String result = template;
+
+        for(Map.Entry<String,Object>entry:data.entrySet()){
+            result = result.replace("${" + entry.getKey() + "}", entry.getValue().toString());
+        }
+        return result;
+    }
 }
