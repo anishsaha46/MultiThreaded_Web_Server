@@ -3,6 +3,8 @@ package server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.FileHandler;
@@ -15,6 +17,7 @@ public class WebServer {
     private final Middleware middleware;
     private final SessionManager sessionManager;
     private final Database database;
+    private final TemplateRenderer templateRenderer;
     private volatile boolean running;
     private final Logger logger;
     private final Config config;
@@ -27,6 +30,7 @@ public class WebServer {
         this.middleware = new Middleware();
         this.sessionManager = new SessionManager();
         this.database = new Database();
+        this.templateRenderer = new TemplateRenderer(config.getStaticDir() + "/templates");
         this.running = false;
         this.logger = Logger.getLogger("WebServer");
         FileHandler fh = new FileHandler(config.getLogFile());
@@ -38,7 +42,11 @@ public class WebServer {
         this.threadPool = Executors.newFixedThreadPool(numberOfThreads);
 
         // Register default routes
-        router.get("/", (method, path) -> "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\nWelcome!");
+        router.get("/", (method, path) -> {
+            Map<String, Object> data = new HashMap<>();
+            data.put("name", "World");
+            return "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n" + templateRenderer.render("index", data);
+        });
 
         // Register middleware
         middleware.use((request) -> {
@@ -59,7 +67,7 @@ public class WebServer {
                     Socket clientSocket = serverSocket.accept();
                     logger.info("New connection from " + clientSocket.getInetAddress());
                     // Use the thread pool to handle the request
-                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, sessionManager, database, logger, config));
+                    threadPool.execute(new RequestHandler(clientSocket, router, middleware, sessionManager, database, templateRenderer, logger, config));
                 } catch (IOException e) {
                     logger.severe("Error accepting connection: " + e.getMessage());
                 }
@@ -88,6 +96,10 @@ public class WebServer {
 
     public Database getDatabase() {
         return database;
+    }
+
+    public TemplateRenderer getTemplateRenderer() {
+        return templateRenderer;
     }
 
     public static void main(String[] args) {
