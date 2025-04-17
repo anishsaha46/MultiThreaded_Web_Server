@@ -21,6 +21,18 @@ public class Config {
     public String getStaticDir() {
         return properties.getProperty("static.dir", "static");
     }
+
+    public String getTemplatesDir() {
+        String dir = properties.getProperty("templates.dir");
+        if (dir != null) {
+            int commentIndex = dir.indexOf('#');
+            if (commentIndex != -1) {
+                dir = dir.substring(0, commentIndex);
+            }
+            dir = dir.trim(); // Trim whitespace
+        }
+        return dir != null ? dir : "templates"; // Provide default if needed
+    }
     
     public String getLogFile() {
         return properties.getProperty("log.file", "server.log");
