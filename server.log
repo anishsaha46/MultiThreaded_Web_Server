@@ -1,0 +1,18 @@
+Apr 15, 2025 11:34:34 PM server.WebServer start
+INFO: Starting server on port 8080
+Apr 15, 2025 11:34:40 PM server.WebServer start
+INFO: New connection from /0:0:0:0:0:0:0:1
+Apr 15, 2025 11:34:40 PM server.WebServer start
+INFO: New connection from /0:0:0:0:0:0:0:1
+Apr 15, 2025 11:34:40 PM server.RequestHandler run
+INFO: GET /
+Apr 15, 2025 11:34:45 PM server.RequestHandler run
+WARNING: Socket timeout: Read timed out
+Apr 15, 2025 11:35:03 PM server.WebServer start
+INFO: New connection from /0:0:0:0:0:0:0:1
+Apr 15, 2025 11:35:03 PM server.WebServer start
+INFO: New connection from /0:0:0:0:0:0:0:1
+Apr 15, 2025 11:35:03 PM server.RequestHandler run
+INFO: GET /
+Apr 15, 2025 11:35:08 PM server.RequestHandler run
+WARNING: Socket timeout: Read timed out
